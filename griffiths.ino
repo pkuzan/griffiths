@@ -1,13 +1,13 @@
 /*Power Controller Software for :
    Windows Machine
-   On and Off pushbutton switches
+   Single pushbutton switche
    Single LED
-   Audio Power Control
+   Audio Power Control via TIP
 
-  Paul Griffiths Auditorium
+  Paul Griffiths Sussex Consoles
 
   Paul Kuzan
-  20/10/2021
+  08/01/2022
 */
 
 #include <Bounce2.h>
@@ -229,6 +229,8 @@ void doStateMachine() {
         if (digitalRead(USBBusPowerPin) == HIGH) {
           DEBUG_PRINT("USB OFF\n");
 
+          switchOffSystemPower();
+
           transitionTo(STATE_WAIT_FOR_PSU);
         }
         break;
@@ -239,7 +241,6 @@ void doStateMachine() {
           DEBUG_PRINT("Waiting for PSU\n");
 
           shutdownTime = millis() + delayShutdownTime;
-          switchOffSystemPower();
 
           justTransitioned = false;
         }
