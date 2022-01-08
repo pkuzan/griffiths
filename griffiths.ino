@@ -160,7 +160,7 @@ void doStateMachine() {
         }
 
         if (switchState == SWITCH_PRESS_SHORT) {
-          DEBUG_PRINT("On Button pressed\n");
+          DEBUG_PRINT("Button pressed in standby state\n");
           switchState = SWITCH_NONE;
           switchOnSystemPower();
 
@@ -190,8 +190,10 @@ void doStateMachine() {
           delay(2000);
           justTransitioned = false;
         }
-        
+
         if (digitalRead(audioOnOffPin) == LOW) {
+          switchOnAudio();
+
           transitionTo(STATE_RUNNING);
         }
         break;
@@ -201,14 +203,13 @@ void doStateMachine() {
         if (justTransitioned) {
           DEBUG_PRINT("Hauptwerk Started\n");
 
-          switchOnAudio();
           transitionLEDState(STATE_LED_OFF);
 
           justTransitioned = false;
         }
 
         if (switchState == SWITCH_PRESS_SHORT) {
-          DEBUG_PRINT("Off Button pressed\n");
+          DEBUG_PRINT("Button pressed in running state \n");
           switchState = SWITCH_NONE;
           transitionLEDState(STATE_LED_FLASH_FAST);
           switchOffAudio();
